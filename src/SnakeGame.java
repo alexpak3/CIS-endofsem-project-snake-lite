@@ -2,12 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Iterator;
+
 
 public class SnakeGame extends JFrame {
 
     private boolean slowDownActive = false;
-    private long slowDownStartTime;
     private final int WIDTH = 300, HEIGHT = 300; // Size of the game window
     private final int DOT_SIZE = 10; // Size of the snake and food
     private int[] x = new int[900]; // x coordinates of the snake's joints
