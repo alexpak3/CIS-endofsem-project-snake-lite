@@ -164,7 +164,7 @@ public class SnakeGame extends JFrame {
                 long elapsedTime = currentTime - slowDownStartTime;
 
                 // If 3 seconds have passed, deactivate slowdown
-                if (elapsedTime >= 1500) {
+                if (elapsedTime >= 3000) {
                     slowDownActive = false;
                 } else {
                     // Slow down the game update rate
@@ -215,7 +215,8 @@ public class SnakeGame extends JFrame {
                 } else if (food.getType() == 'b') {
                     bodyParts += 3;
                     fruitsEaten += 3;
-                    Timer bFruitTimer = new Timer(5000, e -> {
+                    // Schedule the placement of a new power-up after 10 seconds
+                    Timer bFruitTimer = new Timer(10000, e -> {
                         placebFood();
                     });
                     bFruitTimer.setRepeats(false);
@@ -225,8 +226,8 @@ public class SnakeGame extends JFrame {
                     slowDownStartTime = System.currentTimeMillis();
                     foods.remove(food);
 
-                    // Schedule the placement of a new power-up after 1.5 seconds
-                    Timer powerUpTimer = new Timer(1500, e -> {
+                    // Schedule the placement of a new power-up after 10 seconds
+                    Timer powerUpTimer = new Timer(10000, e -> {
                         slowDownActive = false;
                         placePU();
                     });
