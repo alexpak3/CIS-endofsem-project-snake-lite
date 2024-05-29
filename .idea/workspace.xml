@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5470cf4f-9e83-4184-8959-c614bdf57bbb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CIS-endofsem-project-snake-lite.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FoodCircle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SnakeGame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SnakeLite.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/food.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gamepanel.java" afterDir="false" />
+    <list default="true" id="5470cf4f-9e83-4184-8959-c614bdf57bbb" name="Changes" comment="new update">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FoodCircle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SnakeGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SnakeGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gamepanel.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,6 +74,21 @@
       <option name="presentableId" value="Default" />
       <updated>1714457575557</updated>
     </task>
+    <task id="LOCAL-00001" summary="new update">
+      <created>1716790232870</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716790232870</updated>
+    </task>
+    <task id="LOCAL-00002" summary="new update">
+      <created>1716790295543</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1716790295543</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -95,6 +101,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="new update" />
+    <option name="LAST_COMMIT_MESSAGE" value="new update" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CIS_endofsem_project_snake_lite$SnakeLite.ic" NAME="SnakeLite Coverage Results" MODIFIED="1714458134846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

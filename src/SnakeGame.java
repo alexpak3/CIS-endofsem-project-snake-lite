@@ -3,27 +3,24 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-
 public class SnakeGame extends JFrame {
-
     private boolean slowDownActive = false;
-    private final int WIDTH = 300, HEIGHT = 300; // Size of the game window
-    private final int DOT_SIZE = 10; // Size of the snake and food
-    private int[] x = new int[900]; // x coordinates of the snake's joints
-    private int[] y = new int[900]; // y coordinates of the snake's joints
-    private int bodyParts = 4; // Initial size of the snake
-
+    private long slowDownStartTime;
+    private final int WIDTH = 300, HEIGHT = 300;
+    private final int DOT_SIZE = 10;
+    private int[] x = new int[900];
+    private int[] y = new int[900];
+    private int bodyParts = 4;
     private ArrayList<food> foods = new ArrayList<food>();
-    private int fruitsEaten = 0; // Counter for the number of fruits eaten
-    private char direction = 'R'; // Initial direction of the snake
-    private boolean running = false; // Game state
-    private Timer timer; // Timer for game updates
-    private JPanel gamePanel; // Panel to control the game drawing area
+    private int fruitsEaten = 0;
+    private char direction = 'R';
+    private boolean running = true;
+    private Timer timer;
+    private JPanel gamePanel;
 
     public SnakeGame() {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         gamePanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -35,30 +32,11 @@ public class SnakeGame extends JFrame {
         gamePanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         gamePanel.setFocusable(true);
         gamePanel.requestFocusInWindow();
-
         add(gamePanel);
         pack();
         setLocationRelativeTo(null);
-
         initGame();
         initKeyBindings();
-
-        if (slowDownActive) {
-            long currentTime = System.currentTimeMillis();
-            long elapsedTime = currentTime - slowDownStartTime;
-            // If 5 seconds have passed, deactivate slow down
-            if (elapsedTime >= 2500) {
-                slowDownActive = false;
-            } else {
-                slowDownActive = true;
-                try {
-                    Thread.sleep(10000); // Adjust the delay as needed
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        gamePanel.repaint();
     }
 
     private void initGame() {
@@ -70,12 +48,13 @@ public class SnakeGame extends JFrame {
         placeFood();
         placebFood();
         placePU();
-        timer = new Timer(63, e -> gameUpdate());//speed of the snake
+        timer = new Timer(63, e -> gameUpdate());
         timer.start();
         running = true;
-
     }
-//movement used ai to find me videos to teach me how to do the movement
+
+
+    //movement used ai to find me videos to teach me how to do the movement
     private void initKeyBindings() {
         gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "moveLeft");
         gamePanel.getActionMap().put("moveLeft", new AbstractAction() {
@@ -106,15 +85,15 @@ public class SnakeGame extends JFrame {
                 if (direction != 'L') direction = 'R';
             }
         });
-        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "quitGame");
+        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "quitGame");
         gamePanel.getActionMap().put("quitGame", new AbstractAction() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (!running) {
-                            dispose();
-                        }
-                    }
-                });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!running) {
+                    dispose();
+                }
+            }
+        });
 
         gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "moveUp");
         gamePanel.getActionMap().put("moveUp", new AbstractAction() {
@@ -153,37 +132,47 @@ public class SnakeGame extends JFrame {
             }
         });
     }
+
     private void placeFood() {
         int r = (int) (Math.random() * ((WIDTH - DOT_SIZE) / DOT_SIZE));
-        int x = r * DOT_SIZE;
-        int y = (int) (Math.random() * ((HEIGHT - DOT_SIZE) / DOT_SIZE));
-        y *= DOT_SIZE;
-        foods.add(new food(x, y, DOT_SIZE, 'f'));
+        int xPos = r * DOT_SIZE;
+        int yPos = (int) (Math.random() * ((HEIGHT - DOT_SIZE) / DOT_SIZE));
+        yPos *= DOT_SIZE;
+        foods.add(new food(xPos, yPos, DOT_SIZE, 'f'));
     }
 
     private void placebFood() {
         int r = (int) (Math.random() * ((WIDTH - DOT_SIZE) / DOT_SIZE));
-        int x = r * DOT_SIZE;
-        int y = (int) (Math.random() * ((HEIGHT - DOT_SIZE) / DOT_SIZE));
-        y *= DOT_SIZE;
-        foods.add(new food(x, y, DOT_SIZE, 'b'));
+        int xPos = r * DOT_SIZE;
+        int yPos = (int) (Math.random() * ((HEIGHT - DOT_SIZE) / DOT_SIZE));
+        yPos *= DOT_SIZE;
+        foods.add(new food(xPos, yPos, DOT_SIZE, 'b'));
     }
 
     private void placePU() {
         int r = (int) (Math.random() * ((WIDTH - DOT_SIZE) / DOT_SIZE));
-        int x = r * DOT_SIZE;
-        int y = (int) (Math.random() * ((HEIGHT - DOT_SIZE) / DOT_SIZE));
-        y *= DOT_SIZE;
-        foods.add(new food(x, y, DOT_SIZE, 'p'));
+        int xPos = r * DOT_SIZE;
+        int yPos = (int) (Math.random() * ((HEIGHT - DOT_SIZE) / DOT_SIZE));
+        yPos *= DOT_SIZE;
+        foods.add(new food(xPos, yPos, DOT_SIZE, 'p'));
     }
+
     private void gameUpdate() {
         if (running) {
             if (slowDownActive) {
-                // Slow down the game update rate
-                try {
-                    Thread.sleep(100); // Adjust the delay as needed
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                long currentTime = System.currentTimeMillis();
+                long elapsedTime = currentTime - slowDownStartTime;
+
+                // If 3 seconds have passed, deactivate slowdown
+                if (elapsedTime >= 1500) {
+                    slowDownActive = false;
+                } else {
+                    // Slow down the game update rate
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             move();
@@ -193,8 +182,6 @@ public class SnakeGame extends JFrame {
         gamePanel.repaint();
     }
 
-
-
     private void move() {
         for (int i = bodyParts; i > 0; i--) {
             x[i] = x[i - 1];
@@ -202,51 +189,54 @@ public class SnakeGame extends JFrame {
         }
 
         switch (direction) {
-            case 'U': y[0] -= DOT_SIZE; break;
-            case 'D': y[0] += DOT_SIZE; break;
-            case 'L': x[0] -= DOT_SIZE; break;
-            case 'R': x[0] += DOT_SIZE; break;
+            case 'U':
+                y[0] -= DOT_SIZE;
+                break;
+            case 'D':
+                y[0] += DOT_SIZE;
+                break;
+            case 'L':
+                x[0] -= DOT_SIZE;
+                break;
+            case 'R':
+                x[0] += DOT_SIZE;
+                break;
         }
     }
+
     private void checkFood() {
-        ArrayList<food> foodsCopy = new ArrayList<>(foods); // Create a copy of the foods list
+        ArrayList<food> foodsCopy = new ArrayList<>(foods);
         for (food food : foodsCopy) {
             if ((x[0] == food.getX()) && (y[0] == food.getY())) {
                 if (food.getType() == 'f') {
                     bodyParts++;
                     fruitsEaten++;
-                    placeFood(); // Place a new regular fruit
+                    placeFood();
                 } else if (food.getType() == 'b') {
                     bodyParts += 3;
                     fruitsEaten += 3;
-
-                    Timer powerUpTimer = new Timer(10000, e -> {
-                        slowDownActive = false;
+                    Timer bFruitTimer = new Timer(5000, e -> {
                         placebFood();
                     });
-                    powerUpTimer.setRepeats(false); // Execute the task only once
-                    powerUpTimer.start();
+                    bFruitTimer.setRepeats(false);
+                    bFruitTimer.start();
                 } else if (food.getType() == 'p') {
-                    System.out.println("Power-up is eaten");
                     slowDownActive = true;
-                    foods.remove(food); // Remove the eaten power-up from the list
+                    slowDownStartTime = System.currentTimeMillis();
+                    foods.remove(food);
 
                     // Schedule the placement of a new power-up after 1.5 seconds
-                    Timer powerUpTimer = new Timer(2000, e -> {
+                    Timer powerUpTimer = new Timer(1500, e -> {
                         slowDownActive = false;
                         placePU();
                     });
-                    powerUpTimer.setRepeats(false); // Execute the task only once
+                    powerUpTimer.setRepeats(false);
                     powerUpTimer.start();
                 }
-                foods.remove(food); // Remove the eaten food from the original list
+                foods.remove(food);
             }
         }
     }
-
-
-
-
 
     private void checkCollisions() {
         for (int i = bodyParts; i > 0; i--) {
@@ -262,14 +252,17 @@ public class SnakeGame extends JFrame {
 
         if (!running) {
             timer.stop();
+            gamePanel.repaint(); // Repaint the game panel to show the "Game Over" screen
         }
     }
+
+
     private void restartGame() {
         bodyParts = 4;
         fruitsEaten = 0;
         direction = 'R';
         slowDownActive = false;
-        foods.clear(); // Clear the foods list
+        foods.clear();
 
         for (int i = 0; i < bodyParts; i++) {
             x[i] = 50 - i * 10;
@@ -283,6 +276,7 @@ public class SnakeGame extends JFrame {
         timer.start();
         running = true;
     }
+
     private void doDrawing(Graphics g) {
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -299,15 +293,12 @@ public class SnakeGame extends JFrame {
                 g.fillRect(food.getX(), food.getY(), food.getSize(), food.getSize());
             }
 
-            // Draw the snake
             for (int i = 0; i < bodyParts; i++) {
                 if (i == 0) {
                     g.setColor(new Color(0, 255, 255));
-
                     g.fillRect(x[i], y[i], DOT_SIZE, DOT_SIZE);
                 } else {
                     g.setColor(new Color(0, 211, 255));
-
                     g.fillRect(x[i], y[i], DOT_SIZE, DOT_SIZE);
                 }
             }
@@ -315,16 +306,17 @@ public class SnakeGame extends JFrame {
             gameOver(g);
         }
     }
+
     private void showScore(Graphics g) {
-        g.setColor(new Color (255,255,255));
+        g.setColor(new Color(255, 255, 255));
         g.drawString("Fruits eaten: " + fruitsEaten, 10, 20);
     }
 
     private void gameOver(Graphics g) {
         g.setColor(Color.red);
-        g.drawString("Game Over", WIDTH / 2 - 50, HEIGHT / 2-20);
-        g.drawString("Press R to play again", WIDTH/2-80, HEIGHT/2);
-        g.drawString("Press esc to quit the game", WIDTH/2-90,HEIGHT/2+20);
+        g.drawString("Game Over", WIDTH / 2 - 50, HEIGHT / 2 - 20);
+        g.drawString("Press R to play again", WIDTH / 2 - 80, HEIGHT / 2);
+        g.drawString("Press esc to quit the game", WIDTH / 2 - 90, HEIGHT / 2 + 20);
         g.drawString("Your Score: " + fruitsEaten, WIDTH / 2 - 50, HEIGHT / 2 + 40);
     }
 
