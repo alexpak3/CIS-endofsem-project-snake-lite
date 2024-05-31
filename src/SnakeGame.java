@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class SnakeGame extends JFrame {
+    private boolean showTitleScreen = true;
     private boolean slowDownActive = false;
     private long slowDownStartTime;
     private final int WIDTH = 300, HEIGHT = 300;
@@ -35,8 +36,18 @@ public class SnakeGame extends JFrame {
         add(gamePanel);
         pack();
         setLocationRelativeTo(null);
-        initGame();
         initKeyBindings();
+        gamePanel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE && showTitleScreen) {
+                    showTitleScreen = false;
+                    initGame();
+                }else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    dispose(); // Quit the application
+                }
+            }
+        });
     }
 
     private void initGame() {
@@ -214,6 +225,7 @@ public class SnakeGame extends JFrame {
                     placeFood();
                 } else if (food.getType() == 'b') {
                     bodyParts += 3;
+
                     fruitsEaten += 3;
                     // Schedule the placement of a new power-up after 10 seconds
                     Timer bFruitTimer = new Timer(10000, e -> {
@@ -278,35 +290,22 @@ public class SnakeGame extends JFrame {
         running = true;
     }
 
-    private void doDrawing(Graphics g) {
+    private void drawTitleScreen(Graphics g) {
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
-        if (running) {
-            for (food food : foods) {
-                if (food.getType() == 'f') {
-                    g.setColor(Color.green);
-                } else if (food.getType() == 'p') {
-                    g.setColor(Color.MAGENTA);
-                } else if (food.getType() == 'b') {
-                    g.setColor(new Color(0, 255, 150));
-                }
-                g.fillRect(food.getX(), food.getY(), food.getSize(), food.getSize());
-            }
+        g.setColor(new Color(255, 255, 255));
+        g.setFont(new Font("Times New Roman", Font.BOLD, 36));
+        String title = "Snake Game";
+        int titleWidth = g.getFontMetrics().stringWidth(title);
+        g.drawString(title, (WIDTH - titleWidth) / 2, HEIGHT / 3);
 
-            for (int i = 0; i < bodyParts; i++) {
-                if (i == 0) {
-                    g.setColor(new Color(0, 255, 255));
-                    g.fillRect(x[i], y[i], DOT_SIZE, DOT_SIZE);
-                } else {
-                    g.setColor(new Color(0, 211, 255));
-                    g.fillRect(x[i], y[i], DOT_SIZE, DOT_SIZE);
-                }
-            }
-        } else {
-            gameOver(g);
-        }
+        g.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        String instructions = "Press Space to Start";
+        int instructionsWidth = g.getFontMetrics().stringWidth(instructions);
+        g.drawString(instructions, (WIDTH - instructionsWidth) / 2, HEIGHT / 2);
     }
+
 
     private void showScore(Graphics g) {
         g.setColor(new Color(255, 255, 255));
@@ -320,11 +319,44 @@ public class SnakeGame extends JFrame {
         g.drawString("Press esc to quit the game", WIDTH / 2 - 90, HEIGHT / 2 + 20);
         g.drawString("Your Score: " + fruitsEaten, WIDTH / 2 - 50, HEIGHT / 2 + 40);
     }
-
-    public static void main(String[] args) {
+    public static void main (String[]args){
         EventQueue.invokeLater(() -> {
             JFrame frame = new SnakeGame();
             frame.setVisible(true);
         });
+    }
+    private void doDrawing(Graphics g) {
+        g.setColor(new Color(0, 0, 0));
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+        if (showTitleScreen) {
+            drawTitleScreen(g);
+        } else {
+            g.setColor(new Color(0, 0, 0));
+            g.fillRect(0, 0, WIDTH, HEIGHT);
+            if (running) {
+                for (food food : foods) {
+                    if (food.getType() == 'f') {
+                        g.setColor(Color.green);
+                    } else if (food.getType() == 'p') {
+                        g.setColor(Color.MAGENTA);
+                    } else if (food.getType() == 'b') {
+                        g.setColor(new Color(0, 255, 150));
+                    }
+                    g.fillRect(food.getX(), food.getY(), food.getSize(), food.getSize());
+                }
+
+                for (int i = 0; i < bodyParts; i++) {
+                    if (i == 0) {
+                        g.setColor(new Color(0, 255, 255));
+                        g.fillRect(x[i], y[i], DOT_SIZE, DOT_SIZE);
+                    } else {
+                        g.setColor(new Color(0, 211, 255));
+                        g.fillRect(x[i], y[i], DOT_SIZE, DOT_SIZE);
+                    }
+                }
+            } else {
+                gameOver(g);
+            }
+        }
     }
 }
